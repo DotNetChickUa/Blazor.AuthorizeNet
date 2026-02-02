@@ -4,9 +4,14 @@
 
 <input type="text" @bind-value="@formToken"/>
 
-<AuthorizeNetAcceptHosted FormToken="@formToken" UseSandbox="true" />
-
-@* 
+<AuthorizeNetAcceptHosted FormToken="@formToken" 
+                          UseSandbox="true"
+                          OnSuccess="HandleSuccess"
+                          OnCancel="HandleCancel"
+                          />
+						  
+						  @message
+                          @* 
 <form method="post" action="https://test.authorize.net/payment/payment" id="formAuthorizeNetTestPage" name="formAuthorizeNetTestPage">
 	<input type="text" name="token" value="" />
 	Continue to Authorize.net to Payment Page
@@ -37,4 +42,16 @@
 
 @code {
     private string formToken = string.Empty;
+    private string message = string.Empty;
+
+    private void HandleSuccess(string responseJson)
+    {
+	    message = ("Payment succeeded: " + responseJson);
+	    // Deserialize responseJson and update UI
+    }
+
+    private void HandleCancel(string reason)
+    {
+	   message = ("Payment cancelled: " + reason);
+    }
 }

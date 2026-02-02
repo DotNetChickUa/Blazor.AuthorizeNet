@@ -14,10 +14,10 @@ namespace Blazor.AuthorizeNet
         private readonly Lazy<Task<IJSObjectReference>> moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
                 "import", "./_content/Blazor.AuthorizeNet/exampleJsInterop.js").AsTask());
 
-        public async ValueTask initCommunicator()
+        public async ValueTask initCommunicator(DotNetObjectReference<AuthorizeNetAcceptHosted> dotNetRef)
         {
             var module = await moduleTask.Value;
-            await module.InvokeVoidAsync("initCommunicator");
+            await module.InvokeVoidAsync("initCommunicator", dotNetRef);
         }
 
         public async ValueTask DisposeAsync()

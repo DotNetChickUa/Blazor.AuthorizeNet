@@ -1,7 +1,7 @@
 // This is a JavaScript module that is loaded on demand. It can export any number of
 // functions, and may import other JavaScript modules if required.
 
-export function initCommunicator(message) {
+export function initCommunicator(dotnetRef) {
     if (!window.AuthorizeNetPopup) window.AuthorizeNetPopup = {};
     if (!AuthorizeNetPopup.options) AuthorizeNetPopup.options = {
         onPopupClosed: null
@@ -40,11 +40,12 @@ export function initCommunicator(message) {
                 AuthorizeNetPopup.closePopup();
                 break;
             case "cancel":
+                dotNetRef.invokeMethodAsync("HandleCancel", "User cancelled payment");
                 AuthorizeNetPopup.closePopup();
                 break;
             case "transactResponse":
                 var response = params["response"];
-                alert(response);
+                dotNetRef.invokeMethodAsync("HandleTransactionResponse", response);
                 AuthorizeNetPopup.closePopup();
                 break;
             case "resizeWindow":

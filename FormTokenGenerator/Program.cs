@@ -37,7 +37,7 @@ var transactionRequest = new transactionRequestType
 
 var hostedPaymentSettings = new settingType[]
 {
-            new settingType { settingName = "hostedPaymentReturnOptions", settingValue = "{\"showReceipt\": false, \"url\": \"https://36b539b956eb.ngrok-free.app/empty.html\", \"urlText\": \"Continue\"}" },
+            new settingType { settingName = "hostedPaymentReturnOptions", settingValue = "{\"showReceipt\": false, \"url\": \"https://127.0.0.1:7242/empty.html\", \"urlText\": \"Continue\"}" },
             new settingType { settingName = "hostedPaymentButtonOptions", settingValue = "{\"text\": \"Pay\"}" },
             new settingType { settingName = "hostedPaymentStyleOptions", settingValue = "{\"bgColor\": \"blue\"}" },
             new settingType { settingName = "hostedPaymentPaymentOptions", settingValue = "{\"cardCodeRequired\": false, \"showCreditCard\": true, \"showBankAccount\": false}" },
@@ -46,7 +46,7 @@ var hostedPaymentSettings = new settingType[]
             new settingType { settingName = "hostedPaymentBillingAddressOptions", settingValue = "{\"show\": true, \"required\": false}" },
             new settingType { settingName = "hostedPaymentCustomerOptions", settingValue = "{\"showEmail\": false, \"requiredEmail\": false, \"addPaymentProfile\": true}" },
             new settingType { settingName = "hostedPaymentOrderOptions", settingValue = "{\"show\": true, \"merchantName\": \"ACCU\"}" },
-            new settingType { settingName = "hostedPaymentIFrameCommunicatorUrl", settingValue = "{\"url\": \"https://36b539b956eb.ngrok-free.app/iframecommunicator.html\"}" } // TODO: Get from configuration
+            new settingType { settingName = "hostedPaymentIFrameCommunicatorUrl", settingValue = "{\"url\": \"https://127.0.0.1:7242/iframecommunicator.html\"}" } // TODO: Get from configuration
 };
 
 var request = new getHostedPaymentPageRequest
