@@ -40,12 +40,12 @@ export function initCommunicator(dotnetRef) {
                 AuthorizeNetPopup.closePopup();
                 break;
             case "cancel":
-                dotNetRef.invokeMethodAsync("HandleCancel", "User cancelled payment");
+                dotnetRef.invokeMethodAsync("HandleCancel", "User cancelled payment");
                 AuthorizeNetPopup.closePopup();
                 break;
             case "transactResponse":
                 var response = params["response"];
-                dotNetRef.invokeMethodAsync("HandleTransactionResponse", response);
+                dotnetRef.invokeMethodAsync("HandleTransactionResponse", response);
                 AuthorizeNetPopup.closePopup();
                 break;
             case "resizeWindow":
