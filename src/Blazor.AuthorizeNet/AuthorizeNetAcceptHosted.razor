@@ -1,0 +1,30 @@
+﻿<div id="paymentContainer">
+	@if (!string.IsNullOrEmpty(FormToken))
+	{
+		<form method="post" action="@PaymentUrl" id="formAuthorizeNetPopup" name="formAuthorizeNetPopup" target="iframeAuthorizeNet">
+			<input type="hidden" id="popupToken" name="token" value="@FormToken" />
+		</form>
+		<br />
+		<div>
+			Trigger Accept Transaction
+			<button id="btnOpenAuthorizeNetPopup" onclick="AuthorizeNetPopup.openPopup('@PaymentUrl')">Open AuthorizeNetPopup</button>
+		</div>
+
+		<div id="divAuthorizeNetPopup" style="display:none;" class="AuthorizeNetPopupGrayFrameTheme">
+			<div class="AuthorizeNetPopupOuter">
+				<div class="AuthorizeNetPopupTop">
+					<div class="AuthorizeNetPopupClose">
+						<a href="javascript:;" onclick="AuthorizeNetPopup.closePopup();" title="Close">Close</a>
+					</div>
+				</div>
+				<div class="AuthorizeNetPopupInner">
+					<iframe name="iframeAuthorizeNet" id="iframeAuthorizeNet" src="empty.html" frameborder="0" scrolling="no"></iframe>
+				</div>
+				<div class="AuthorizeNetPopupBottom">
+					<div class="AuthorizeNetPopupLogo" title="Powered by Authorize.net"></div>
+				</div>
+				<div id="divAuthorizeNetPopupScreen" style="display:none;"></div>
+			</div>
+		</div>
+	}
+</div>
