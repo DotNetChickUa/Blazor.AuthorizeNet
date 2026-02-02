@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Blazor.AuthorizeNet/Blazor.AuthorizeNet.Sample.csproj" />
+  <Project Path="FormTokenGenerator/FormTokenGenerator.csproj" />
+</Solution>

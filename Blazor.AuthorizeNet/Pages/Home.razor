@@ -1,0 +1,36 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+@* 
+<form method="post" action="https://test.authorize.net/payment/payment" id="formAuthorizeNetTestPage" name="formAuthorizeNetTestPage">
+	<input type="text" name="token" value="" />
+	Continue to Authorize.net to Payment Page
+	<button id="btnContinue">Continue to next page</button>
+</form>  *@
+@* 
+<form method="post" action="https://test.authorize.net/payment/payment" id="formAuthorizeNetPopup" name="formAuthorizeNetPopup" target="iframeAuthorizeNet" style="display:none;">
+	<input type="text" id="popupToken" name="token" value="" />
+</form>
+
+
+<div id="divAuthorizeNetPopup" style="display:none;" class="AuthorizeNetPopupGrayFrameTheme">
+	<div class="AuthorizeNetPopupOuter">
+		<div class="AuthorizeNetPopupTop">
+			<div class="AuthorizeNetPopupClose">
+				<a href="javascript:;" onclick="AuthorizeNetPopup.closePopup();" title="Close"> </a>
+			</div>
+		</div>
+		<div class="AuthorizeNetPopupInner">
+			<iframe name="iframeAuthorizeNet" id="iframeAuthorizeNet" src="empty.html" frameborder="0" scrolling="no"></iframe>
+		</div>
+		<div class="AuthorizeNetPopupBottom">
+			<div class="AuthorizeNetPopupLogo" title="Powered by Authorize.net"></div>
+		</div>
+		<div id="divAuthorizeNetPopupScreen" style="display:none;"></div>
+	</div>
+</div> *@
