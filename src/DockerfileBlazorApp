@@ -8,5 +8,5 @@ RUN dotnet publish SampleBlazorApp/SampleBlazorApp.csproj -c Release
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
-COPY --from=build /app/SampleBlazorApp/bin/Release/net10.0/ ./
+COPY --from=build /app/SampleBlazorApp/bin/Release/net10.0/publish/ ./
 ENTRYPOINT ["dotnet", "SampleBlazorApp.dll"]
