@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace Blazor.AuthorizeNet;
@@ -8,6 +10,10 @@ public partial class AuthorizeNetAcceptHosted(BlazorAuthorizeNetJsInterop blazor
     private DotNetObjectReference<AuthorizeNetAcceptHosted>? _dotNetRef;
     private bool _isInitialized;
     private bool _isOpened;
+    private static JsonSerializerOptions _jsonOptions = new(JsonSerializerDefaults.Web)
+    {
+        NumberHandling = JsonNumberHandling.AllowReadingFromString
+    };
 
     [Parameter]
     [EditorRequired]
@@ -47,9 +53,10 @@ public partial class AuthorizeNetAcceptHosted(BlazorAuthorizeNetJsInterop blazor
     }
 
     [JSInvokable]
-    public async Task HandleTransactionResponse(TransactionDetail detail)
+    public async Task HandleTransactionResponse(string detail)
     {
-        await OnSuccess.InvokeAsync(detail);
+        var transactionDetail = JsonSerializer.Deserialize<TransactionDetail>(detail, _jsonOptions);
+        await OnSuccess.InvokeAsync(transactionDetail);
         _isOpened = false;
     }
 
