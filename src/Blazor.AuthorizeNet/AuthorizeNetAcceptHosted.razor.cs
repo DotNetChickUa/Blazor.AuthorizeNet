@@ -5,7 +5,7 @@ using Microsoft.JSInterop;
 
 namespace Blazor.AuthorizeNet;
 
-public partial class AuthorizeNetAcceptHosted(BlazorAuthorizeNetJsInterop blazorAuthorizeNetJsInterop) : ComponentBase, IDisposable
+public partial class AuthorizeNetAcceptHosted(BlazorAuthorizeNetJsInterop blazorAuthorizeNetJsInterop, IJSRuntime jsRuntime) : ComponentBase, IDisposable
 {
     private DotNetObjectReference<AuthorizeNetAcceptHosted>? _dotNetRef;
     private bool _isInitialized;
@@ -55,9 +55,17 @@ public partial class AuthorizeNetAcceptHosted(BlazorAuthorizeNetJsInterop blazor
     [JSInvokable]
     public async Task HandleTransactionResponse(string detail)
     {
-        var transactionDetail = JsonSerializer.Deserialize<TransactionDetail>(detail, _jsonOptions);
-        await OnSuccess.InvokeAsync(transactionDetail);
-        _isOpened = false;
+        try
+        {
+            var transactionDetail = JsonSerializer.Deserialize<TransactionDetail>(detail, _jsonOptions);
+            await OnSuccess.InvokeAsync(transactionDetail);
+            _isOpened = false;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            await jsRuntime.InvokeVoidAsync("alert", "An error occurred while processing the transaction." + e.Message + detail);
+        }
     }
 
     [JSInvokable]
