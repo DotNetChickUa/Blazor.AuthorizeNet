@@ -17,9 +17,9 @@
 	private string formToken = string.Empty;
 	private string message = string.Empty;
 
-	private void HandleSuccess(string responseJson)
+	private void HandleSuccess(TransactionDetail responseJson)
 	{
-		message = ("Payment succeeded: " + responseJson);
+		message = ("Payment succeeded: " + responseJson.TransId);
 		// Deserialize responseJson and update UI
 	}
 

@@ -2,7 +2,7 @@ using AuthorizeNet.Api.Contracts.V1;
 using AuthorizeNet.Api.Controllers;
 using AuthorizeNet.Api.Controllers.Bases;
 using Environment = AuthorizeNet.Environment;
-
+var url = Console.ReadLine();
 ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = Environment.SANDBOX;
 
 ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication = new merchantAuthenticationType
@@ -37,7 +37,7 @@ var transactionRequest = new transactionRequestType
 
 var hostedPaymentSettings = new settingType[]
 {
-            new settingType { settingName = "hostedPaymentReturnOptions", settingValue = "{\"showReceipt\": false, \"url\": \"https://127.0.0.1:7242/empty.html\", \"urlText\": \"Continue\"}" },
+            new settingType { settingName = "hostedPaymentReturnOptions", settingValue = $"{{\"showReceipt\": false, \"url\": \"{url}/empty.html\", \"urlText\": \"Continue\"}}" },
             new settingType { settingName = "hostedPaymentButtonOptions", settingValue = "{\"text\": \"Pay\"}" },
             new settingType { settingName = "hostedPaymentStyleOptions", settingValue = "{\"bgColor\": \"blue\"}" },
             new settingType { settingName = "hostedPaymentPaymentOptions", settingValue = "{\"cardCodeRequired\": false, \"showCreditCard\": true, \"showBankAccount\": false}" },
@@ -46,7 +46,7 @@ var hostedPaymentSettings = new settingType[]
             new settingType { settingName = "hostedPaymentBillingAddressOptions", settingValue = "{\"show\": true, \"required\": false}" },
             new settingType { settingName = "hostedPaymentCustomerOptions", settingValue = "{\"showEmail\": false, \"requiredEmail\": false, \"addPaymentProfile\": true}" },
             new settingType { settingName = "hostedPaymentOrderOptions", settingValue = "{\"show\": true, \"merchantName\": \"ACCU\"}" },
-            new settingType { settingName = "hostedPaymentIFrameCommunicatorUrl", settingValue = "{\"url\": \"https://127.0.0.1:7242/iframecommunicator.html\"}" } // TODO: Get from configuration
+            new settingType { settingName = "hostedPaymentIFrameCommunicatorUrl", settingValue = $"{{\"url\": \"{url}/IFrameCommunicator.html\"}}" }
 };
 
 var request = new getHostedPaymentPageRequest

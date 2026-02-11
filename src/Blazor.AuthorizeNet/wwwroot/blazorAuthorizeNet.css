@@ -1,0 +1,43 @@
+#divAuthorizeNetPopupScreen {
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: #808080;
+    opacity: 0.5;
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)';
+    filter: alpha(opacity=50);
+}
+
+.AuthorizeNetPopupGrayFrameTheme.AuthorizeNetPopupOuter {
+    background-color: #dddddd;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #a0a0a0 #909090 #909090 #a0a0a0;
+    padding: 4px;
+}
+
+.AuthorizeNetPopupGrayFrameTheme.AuthorizeNetPopupInner {
+    background-color: #ffffff;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #cfcfcf #ebebeb #ebebeb #cfcfcf;
+}
+
+.AuthorizeNetPopupGrayFrameTheme.AuthorizeNetPopupBottom {
+    height: 30px;
+}
+
+.AuthorizeNetPopupGrayFrameTheme.AuthorizeNetPopupLogo {
+    position: absolute;
+    right: 9px;
+    bottom: 4px;
+    width: 200px;
+    height: 25px;
+}
+
+.AuthorizeNetPopupSimpleTheme.AuthorizeNetPopupOuter {
+    border: 1px solid #585858;
+    background-color: #ffffff;
+}
