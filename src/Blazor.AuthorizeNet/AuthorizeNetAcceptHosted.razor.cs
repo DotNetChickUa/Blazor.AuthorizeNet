@@ -44,7 +44,7 @@ public partial class AuthorizeNetAcceptHosted(BlazorAuthorizeNetJsInterop blazor
             await blazorAuthorizeNetJsInterop.InitCommunicator(_dotNetRef);
             _isInitialized = true;
         }
-        
+
         if (!_isOpened && !string.IsNullOrEmpty(FormToken))
         {
             await blazorAuthorizeNetJsInterop.OpenPopup(PaymentUrl);
@@ -55,17 +55,9 @@ public partial class AuthorizeNetAcceptHosted(BlazorAuthorizeNetJsInterop blazor
     [JSInvokable]
     public async Task HandleTransactionResponse(string detail)
     {
-        try
-        {
-            var transactionDetail = JsonSerializer.Deserialize<TransactionDetail>(detail, _jsonOptions);
-            await OnSuccess.InvokeAsync(transactionDetail);
-            _isOpened = false;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            await jsRuntime.InvokeVoidAsync("alert", "An error occurred while processing the transaction." + e.Message + detail);
-        }
+        var transactionDetail = JsonSerializer.Deserialize<TransactionDetail>(detail, _jsonOptions);
+        await OnSuccess.InvokeAsync(transactionDetail);
+        _isOpened = false;
     }
 
     [JSInvokable]
