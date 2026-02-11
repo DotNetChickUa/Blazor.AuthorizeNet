@@ -1,27 +1,6 @@
-using System.Globalization;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Blazor.AuthorizeNet;
-
-public class CustomDateTimeConverter : JsonConverter<DateTime>
-{
-    private const string DateTimeFormat = "M/d/yyyy h:mm:ss tt";
-
-    public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        var dateString = reader.GetString();
-        if (string.IsNullOrEmpty(dateString))
-            return default;
-
-        return DateTime.ParseExact(dateString, DateTimeFormat, CultureInfo.InvariantCulture);
-    }
-
-    public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
-    {
-        writer.WriteStringValue(value.ToString(DateTimeFormat, CultureInfo.InvariantCulture));
-    }
-}
 
 public class TransactionDetail
 {
@@ -40,6 +19,6 @@ public class TransactionDetail
     public string? PoNumber { get; set; }
     public string? OrderInvoiceNumber { get; set; }
     
-    [JsonConverter(typeof(CustomDateTimeConverter))]
+    [JsonConverter(typeof(AuthorizeNetDateTimeConverter))]
     public DateTime DateTime { get; set; }
 }
