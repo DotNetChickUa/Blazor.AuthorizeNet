@@ -38,7 +38,13 @@ export function initCommunicator(dotnetRef) {
                 break;
             case "transactResponse":
                 const response = params["response"];
-                await dotnetRef.invokeMethodAsync("HandleTransactionResponse", response);
+                try {
+                    await dotnetRef.invokeMethodAsync("HandleTransactionResponse", response);
+                }
+                catch (err) {
+                    console.log(err);
+                }
+
                 AuthorizeNetPopup.closePopup();
                 break;
         }
