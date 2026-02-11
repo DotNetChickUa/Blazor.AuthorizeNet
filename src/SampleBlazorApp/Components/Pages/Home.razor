@@ -1,0 +1,31 @@
+﻿@page "/"
+@using Blazor.AuthorizeNet
+
+<PageTitle>Home</PageTitle>
+
+<input type="text" @bind-value="@formToken"/>
+
+<AuthorizeNetAcceptHosted FormToken="@formToken" 
+                          UseSandbox="true"
+                          OnSuccess="HandleSuccess"
+                          OnCancel="HandleCancel"
+/>
+						  
+@message
+
+
+@code {
+	private string formToken = string.Empty;
+	private string message = string.Empty;
+
+	private void HandleSuccess(TransactionDetail responseJson)
+	{
+		message = ("Payment succeeded: " + responseJson.TransId);
+		// Deserialize responseJson and update UI
+	}
+
+	private void HandleCancel(string reason)
+	{
+		message = ("Payment cancelled: " + reason);
+	}
+}

@@ -1,0 +1,16 @@
+# Use the .NET 8 SDK image to build the Blazor app
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the rest of the source code into the container
+COPY . ./
+
+# Publish the app in Release mode to the 'out' folder
+RUN dotnet publish SampleBlazorApp/SampleBlazorApp.csproj -c Release -o out
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+WORKDIR /app
+COPY --from=build /app/SampleBlazorApp/out ./
+ENTRYPOINT ["dotnet", "SampleBlazorApp.dll"]

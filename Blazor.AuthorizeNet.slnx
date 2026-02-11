@@ -1,8 +1,10 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path="src/Dockerfile" />
+    <File Path="src/DockerfileBlazorApp" />
   </Folder>
   <Project Path="FormTokenGenerator/FormTokenGenerator.csproj" />
   <Project Path="src/Blazor.AuthorizeNet/Blazor.AuthorizeNet.csproj" />
   <Project Path="src/Sample/Sample.csproj" />
+  <Project Path="src/SampleBlazorApp/SampleBlazorApp.csproj" Id="5debcc9d-db4e-4a58-b272-c5a7e9bfbffb" />
 </Solution>
