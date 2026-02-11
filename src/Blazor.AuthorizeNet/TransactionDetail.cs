@@ -13,7 +13,7 @@ public class TransactionDetail
     public string? ShippingAmount { get; set; }
     public string? DutyAmount { get; set; }
     public string? CustomerId { get; set; }
-    public decimal TotalAmount { get; set; }
+    public string? TotalAmount { get; set; }
     public string? PoNumber { get; set; }
     public string? OrderInvoiceNumber { get; set; }
     public string? DateTime { get; set; }
