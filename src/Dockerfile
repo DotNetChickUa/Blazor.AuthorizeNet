@@ -1,19 +1,26 @@
-# STAGE 1: Build
+# Use the .NET 8 SDK image to build the Blazor app
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy csproj and restore
+# Copy the rest of the source code into the container
+COPY . ./
 
-COPY Blazor.AuthorizeNet/. ./Blazor.AuthorizeNet/
-COPY Sample/. ./Sample/
-RUN dotnet restore ./Sample/Sample.csproj
-WORKDIR /app/Sample
+# Publish the app in Release mode to the 'out' folder
+RUN dotnet publish Sample/Sample.csproj -c Release -o out
 
-# Build
-RUN dotnet publish -c Release -o out
+# Use the Nginx base image to serve the published app
+FROM nginx
 
-# STAGE 2: Run
-FROM mcr.microsoft.com/dotnet/aspnet:10.0
+# Set a working directory (optional, for consistency)
 WORKDIR /app
-COPY --from=build /app/Sample/out ./
-ENTRYPOINT ["dotnet", "Sample.dll"]
+
+# Expose port 80 (the default port Nginx listens on)
+EXPOSE 80
+
+# Copy the custom Nginx configuration file into the container
+COPY default.conf /etc/nginx/conf.d/default.conf
+
+# Copy the published Blazor files to the Nginx web root
+COPY --from=build /app/out/wwwroot /usr/share/nginx/html
