@@ -6,11 +6,12 @@
 @inject NavigationManager NavigationManager
 
 <PageTitle>Home</PageTitle>
+<p>You can get name and transkey by registering here: https://developer.authorize.net/hello_world/sandbox.html</p>
 
 Enter Name:
-<input type="text" @bind-value="@name"/>
+<input type="text" @bind-value="@name" required/>
 Enter TransKey:
-<input type="text" @bind-value="@transKey"/>
+<input type="text" @bind-value="@transKey" required/>
 <button @onclick="GenerateFormToken">Generate Form Token</button>
 
 <AuthorizeNetAcceptHosted FormToken="@formToken" 
@@ -42,6 +43,8 @@ Enter TransKey:
 
 	private void GenerateFormToken()
 	{
+try
+{
         ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.SANDBOX;
 
         ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication = new merchantAuthenticationType
@@ -97,6 +100,8 @@ Enter TransKey:
         var controller = new getHostedPaymentPageController(request);
         var result = controller.ExecuteWithApiResponse();
         formToken = result.token;
+}
+catch(Exception e){message = e.Message;}
 	}
 
 }
