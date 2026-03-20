@@ -6,12 +6,12 @@
 @inject NavigationManager NavigationManager
 
 <PageTitle>Home</PageTitle>
-<p>You can get name and transkey by registering here: https://developer.authorize.net/hello_world/sandbox.html</p>
+<p>You can get name and transkey by registering here: <a href="https://developer.authorize.net/hello_world/sandbox.html">https://developer.authorize.net/hello_world/sandbox.html</a></p>
 
 Enter Name:
-<input type="text" @bind-value="@name" required/>
+<input id="name" type="text" @bind-value="@name" required/>
 Enter TransKey:
-<input type="text" @bind-value="@transKey" required/>
+<input id="transKey" type="text" @bind-value="@transKey" required/>
 <button @onclick="GenerateFormToken">Generate Form Token</button>
 
 <AuthorizeNetAcceptHosted FormToken="@formToken" 
@@ -45,6 +45,10 @@ Enter TransKey:
 	{
 try
 {
+if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(transKey)){
+message = "Name and TransKey are required";
+return;
+}
         ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.SANDBOX;
 
         ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication = new merchantAuthenticationType
