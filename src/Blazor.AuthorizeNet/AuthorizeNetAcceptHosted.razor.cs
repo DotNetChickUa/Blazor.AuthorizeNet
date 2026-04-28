@@ -52,7 +52,7 @@ public partial class AuthorizeNetAcceptHosted(BlazorAuthorizeNetJsInterop blazor
         if (!_isInitialized)
         {
             _dotNetRef = DotNetObjectReference.Create(this);
-            await blazorAuthorizeNetJsInterop.InitCommunicator(_dotNetRef);
+            await blazorAuthorizeNetJsInterop.InitCommunicator(_dotNetRef, Mode);
             _isInitialized = true;
         }
 

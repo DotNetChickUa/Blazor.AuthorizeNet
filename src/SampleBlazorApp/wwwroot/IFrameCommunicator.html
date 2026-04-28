@@ -19,9 +19,9 @@
                 && window.parent
                 && window.parent.parent
                 && window.parent.parent.AuthorizeNetIFrame
-                && window.parent.parent.AuthorizeNetIFrame.onReceiveCommunication) {
+                && window.parent.parent.AuthorizeNetIFrame.onFrameReceiveCommunication) {
                 // Errors indicate a mismatch in domain between the page containing the iframe and this page.
-                window.parent.parent.AuthorizeNetIFrame.onReceiveCommunication(str);
+                window.parent.parent.AuthorizeNetIFrame.onFrameReceiveCommunication(str);
             }
         }
 

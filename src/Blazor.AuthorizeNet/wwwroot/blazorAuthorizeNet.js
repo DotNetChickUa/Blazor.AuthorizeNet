@@ -1,4 +1,4 @@
-export function initCommunicator(dotnetRef) {
+export function initCommunicator(dotnetRef, mode) {
     if (!window.AuthorizeNetPopup) window.AuthorizeNetPopup = {};
     if (!window.AuthorizeNetIFrame) window.AuthorizeNetIFrame = {};
     if (!AuthorizeNetPopup.options) AuthorizeNetPopup.options = {
@@ -31,11 +31,21 @@ export function initCommunicator(dotnetRef) {
     AuthorizeNetIFrame.openIFrame = function () {
         const ifrm = document.getElementById("add_payment");
         ifrm.style.display = "";
+
         const form = document.forms["send_token"];
         form.submit();
+
+        const el = document.getElementById('add_payment');
+        const y = el.getBoundingClientRect().top + window.pageYOffset - 50;
+
+        window.scrollTo({ top: y, behavior: 'auto' });
     };
 
     AuthorizeNetPopup.onReceiveCommunication = async function (querystr) {
+        if (mode !== "IFrameLightbox") {
+            return;
+        }
+
         const params = parseQueryString(querystr);
         switch (params["action"]) {
             case "successfulSave":
@@ -60,7 +70,11 @@ export function initCommunicator(dotnetRef) {
         }
     };
 
-    AuthorizeNetIFrame.onReceiveCommunication = async function (querystr) {
+    AuthorizeNetIFrame.onFrameReceiveCommunication = async function (querystr) {
+        if (mode !== "EmbeddedIFrame") {
+            return;
+        }
+
         var params = parseQueryString(querystr);
         switch (params["action"]) {
             case "successfulSave":

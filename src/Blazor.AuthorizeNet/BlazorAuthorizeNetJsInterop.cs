@@ -16,10 +16,10 @@ public class BlazorAuthorizeNetJsInterop(IJSRuntime jsRuntime) : IAsyncDisposabl
         }
     }
 
-    public async ValueTask InitCommunicator(DotNetObjectReference<AuthorizeNetAcceptHosted> dotNetRef)
+    public async ValueTask InitCommunicator(DotNetObjectReference<AuthorizeNetAcceptHosted> dotNetRef, AuthorizeNetMode mode)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("initCommunicator", dotNetRef);
+        await module.InvokeVoidAsync("initCommunicator", dotNetRef, mode.ToString());
     }
 
     public async Task OpenPopup(string paymentUrl)
