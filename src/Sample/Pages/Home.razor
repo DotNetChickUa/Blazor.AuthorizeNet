@@ -1,38 +1,20 @@
 ﻿@page "/"
-@using Blazor.AuthorizeNet
+
+@inject NavigationManager NavigationManager
 
 <PageTitle>Home</PageTitle>
-<input type="text" @bind-value="@formToken"/>
 
-<AuthorizeNetAcceptHosted FormToken="@formToken" 
-                          UseSandbox="true"
-                          Mode="AuthorizeNetMode.IFrameLightbox"
-                          OnSuccess="HandleSuccess"
-                          OnCancel="HandleCancel"
-/>
-
-<AuthorizeNetAcceptHosted FormToken="@formToken" 
-                          UseSandbox="true"
-						  Mode="AuthorizeNetMode.EmbeddedIFrame"
-                          OnSuccess="HandleSuccess"
-                          OnCancel="HandleCancel"
-/>
-						  
-@message
+<button @onclick="Frame">Frame</button>
+<button @onclick="Embedded">Embedded</button>
 
 
 @code {
-	private string formToken = string.Empty;
-	private string message = string.Empty;
-
-	private void HandleSuccess(TransactionDetail responseJson)
+	private void Frame()
 	{
-		message = ("Payment succeeded: " + responseJson.TransId);
-		// Deserialize responseJson and update UI
+		NavigationManager.NavigateTo("/frame");
 	}
-
-	private void HandleCancel(string reason)
+	private void Embedded()
 	{
-		message = ("Payment cancelled: " + reason);
+		NavigationManager.NavigateTo("/embedded");
 	}
 }

@@ -1,0 +1,32 @@
+﻿@page "/frame"
+@using Blazor.AuthorizeNet
+
+<PageTitle>Home</PageTitle>
+<p>You can get name and transkey by registering here: <a href="https://developer.authorize.net/hello_world/sandbox.html">https://developer.authorize.net/hello_world/sandbox.html</a></p>
+
+
+<input type="text" @bind-value="@formToken" />
+
+<AuthorizeNetAcceptHosted FormToken="@formToken"
+						  UseSandbox="true"
+						  Mode="AuthorizeNetMode.IFrameLightbox"
+						  OnSuccess="HandleSuccess"
+						  OnCancel="HandleCancel" />
+						  
+@message
+
+@code {
+	private string formToken = string.Empty;
+	private string message = string.Empty;
+
+	private void HandleSuccess(TransactionDetail responseJson)
+	{
+		message = ("Payment succeeded: " + responseJson.TransId);
+		// Deserialize responseJson and update UI
+	}
+
+	private void HandleCancel(string reason)
+	{
+		message = ("Payment cancelled: " + reason);
+	}
+}

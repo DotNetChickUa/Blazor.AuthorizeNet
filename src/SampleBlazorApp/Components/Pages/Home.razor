@@ -1,119 +1,20 @@
 ﻿@page "/"
-@using AuthorizeNet.Api.Contracts.V1
-@using AuthorizeNet.Api.Controllers
-@using AuthorizeNet.Api.Controllers.Bases
-@using Blazor.AuthorizeNet
+
 @inject NavigationManager NavigationManager
 
 <PageTitle>Home</PageTitle>
-<p>You can get name and transkey by registering here: <a href="https://developer.authorize.net/hello_world/sandbox.html">https://developer.authorize.net/hello_world/sandbox.html</a></p>
 
-Enter Name:
-<input id="name" type="text" @bind-value="@name" required/>
-Enter TransKey:
-<input id="transKey" type="text" @bind-value="@transKey" required/>
-<button @onclick="GenerateFormToken">Generate Form Token</button>
-
-<AuthorizeNetAcceptHosted FormToken="@formToken" 
-                          UseSandbox="true"
-                          Mode="AuthorizeNetMode.IFrameLightbox"
-                          OnSuccess="HandleSuccess"
-                          OnCancel="HandleCancel"
-/>
-
-<AuthorizeNetAcceptHosted FormToken="@formToken" 
-                          UseSandbox="true"
-						  Mode="AuthorizeNetMode.EmbeddedIFrame"
-                          OnSuccess="HandleSuccess"
-                          OnCancel="HandleCancel"
-/>
-						  
-@message
+<button @onclick="Frame">Frame</button>
+<button @onclick="Embedded">Embedded</button>
 
 
 @code {
-	private string name = string.Empty;
-	private string transKey = string.Empty;
-
-	private string formToken = string.Empty;
-	private string message = string.Empty;
-
-	private void HandleSuccess(TransactionDetail responseJson)
+	private void Frame()
 	{
-		message = ("Payment succeeded: " + responseJson.TransId);
-		// Deserialize responseJson and update UI
+		NavigationManager.NavigateTo("/frame");
 	}
-
-	private void HandleCancel(string reason)
+	private void Embedded()
 	{
-		message = ("Payment cancelled: " + reason);
+		NavigationManager.NavigateTo("/embedded");
 	}
-
-	private void GenerateFormToken()
-	{
-try
-{
-if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(transKey)){
-message = "Name and TransKey are required";
-return;
-}
-        ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.SANDBOX;
-
-        ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication = new merchantAuthenticationType
-        {
-            name = name,
-            ItemElementName = ItemChoiceType.transactionKey,
-            Item = transKey
-        };
-
-        var billingAddress = new customerAddressType
-        {
-            firstName = "FirstName",
-            lastName = "LastName",
-            address = "Address",
-            city = "City",
-            zip = "Zip",
-            country = "Country",
-            email = "test@gmail.com",
-            state = "State",
-            phoneNumber = "PhoneNumber"
-        };
-
-        var transactionRequest = new transactionRequestType
-        {
-            transactionType = nameof(transactionTypeEnum.authCaptureTransaction),
-            amount = 20,
-
-            customer = new customerDataType() { email = "test@gmail.com" },
-            billTo = billingAddress,
-            profile = new customerProfilePaymentType() { customerProfileId = "123" },
-        };
-		var url = NavigationManager.BaseUri.TrimEnd('/');
-        var hostedPaymentSettings = new settingType[]
-        {
-            new settingType { settingName = "hostedPaymentReturnOptions", settingValue = $"{{\"showReceipt\": false, \"url\": \"{url}/empty.html\", \"urlText\": \"Continue\"}}" },
-            new settingType { settingName = "hostedPaymentButtonOptions", settingValue = "{\"text\": \"Pay\"}" },
-            new settingType { settingName = "hostedPaymentStyleOptions", settingValue = "{\"bgColor\": \"blue\"}" },
-            new settingType { settingName = "hostedPaymentPaymentOptions", settingValue = "{\"cardCodeRequired\": false, \"showCreditCard\": true, \"showBankAccount\": false}" },
-            new settingType { settingName = "hostedPaymentSecurityOptions", settingValue = "{\"captcha\": false}" },
-            new settingType { settingName = "hostedPaymentShippingAddressOptions", settingValue = "{\"show\": false, \"required\": false}" },
-            new settingType { settingName = "hostedPaymentBillingAddressOptions", settingValue = "{\"show\": true, \"required\": false}" },
-            new settingType { settingName = "hostedPaymentCustomerOptions", settingValue = "{\"showEmail\": false, \"requiredEmail\": false, \"addPaymentProfile\": true}" },
-            new settingType { settingName = "hostedPaymentOrderOptions", settingValue = "{\"show\": true, \"merchantName\": \"ACCU\"}" },
-            new settingType { settingName = "hostedPaymentIFrameCommunicatorUrl", settingValue = $"{{\"url\": \"{url}/IFrameCommunicator.html\"}}" }
-        };
-
-        var request = new getHostedPaymentPageRequest
-        {
-            transactionRequest = transactionRequest,
-            hostedPaymentSettings = hostedPaymentSettings
-        };
-
-        var controller = new getHostedPaymentPageController(request);
-        var result = controller.ExecuteWithApiResponse();
-        formToken = result.token;
-}
-catch(Exception e){message = e.Message;}
-	}
-
 }
