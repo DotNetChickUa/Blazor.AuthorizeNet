@@ -56,36 +56,35 @@ export function initCommunicator(dotnetRef) {
                 var ifrm = document.getElementById("iframeAuthorizeNet");
                 ifrm.style.width = w.toString() + "px";
                 ifrm.style.height = h.toString() + "px";
-                centerPopup();
                 break;
         }
     };
 
-    AuthorizeNetIFrame.onReceiveCommunication = function (querystr) {
+    AuthorizeNetIFrame.onReceiveCommunication = async function (querystr) {
         var params = parseQueryString(querystr);
         switch (params["action"]) {
-            //case "successfulSave":
-            //    var ifrm = document.getElementById("add_payment");
-            //    ifrm.style.display = 'none';
-            //    break;
-            //case "cancel":
-            //    await dotnetRef.invokeMethodAsync("HandleCancel", "User cancelled payment");
-            //    var ifrm = document.getElementById("add_payment");
-            //    ifrm.style.display = 'none';
-            //    break;
-            //case "resizeWindow":
-            //    var w = parseInt(params["width"]);
-            //    var h = parseInt(params["height"]);
-            //    var ifrm = document.getElementById("add_payment");
-            //    ifrm.style.width = w.toString() + "px";
-            //    ifrm.style.height = h.toString() + "px";
-            //    break;
-            //case "transactResponse":
-            //    var ifrm = document.getElementById("add_payment");
-            //    ifrm.style.display = 'none';
-            //    const response = params["response"];
-            //    await dotnetRef.invokeMethodAsync("HandleTransactionResponse", response);
-            //    break;
+            case "successfulSave":
+                var ifrm = document.getElementById("add_payment");
+                ifrm.style.display = 'none';
+                break;
+            case "cancel":
+                await dotnetRef.invokeMethodAsync("HandleCancel", "User cancelled payment");
+                var ifrm = document.getElementById("add_payment");
+                ifrm.style.display = 'none';
+                break;
+            case "resizeWindow":
+                var w = parseInt(params["width"]);
+                var h = parseInt(params["height"]);
+                var ifrm = document.getElementById("add_payment");
+                ifrm.style.width = w.toString() + "px";
+                ifrm.style.height = h.toString() + "px";
+                break;
+            case "transactResponse":
+                var ifrm = document.getElementById("add_payment");
+                ifrm.style.display = 'none';
+                const response = params["response"];
+                await dotnetRef.invokeMethodAsync("HandleTransactionResponse", response);
+                break;
         }
     };
 
