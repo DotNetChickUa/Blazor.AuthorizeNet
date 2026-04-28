@@ -14,6 +14,15 @@
                 // Errors indicate a mismatch in domain between the page containing the iframe and this page.
                 window.parent.parent.AuthorizeNetPopup.onReceiveCommunication(str);
             }
+
+            if (str && str.length > 0
+                && window.parent
+                && window.parent.parent
+                && window.parent.parent.AuthorizeNetIFrame
+                && window.parent.parent.AuthorizeNetIFrame.onReceiveCommunication) {
+                // Errors indicate a mismatch in domain between the page containing the iframe and this page.
+                window.parent.parent.AuthorizeNetIFrame.onReceiveCommunication(str);
+            }
         }
 
         function receiveMessage(event) {

@@ -34,6 +34,18 @@ public class BlazorAuthorizeNetJsInterop(IJSRuntime jsRuntime) : IAsyncDisposabl
         }
     }
 
+    public async Task OpenIFrame()
+    {
+        try
+        {
+            await jsRuntime.InvokeVoidAsync("AuthorizeNetIFrame.openIFrame");
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
     public async Task Cancel()
     {
         try

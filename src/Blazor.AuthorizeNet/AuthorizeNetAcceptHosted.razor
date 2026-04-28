@@ -1,18 +1,35 @@
-﻿<div id="paymentContainer">
-    <form method="post" action="@PaymentUrl" id="formAuthorizeNetPopup" name="formAuthorizeNetPopup"
-          target="iframeAuthorizeNet">
-        <input type="hidden" id="popupToken" name="token" value="@FormToken"/>
-    </form>
+﻿@switch (Mode)
+{
+	case AuthorizeNetMode.EmbeddedIFrame:
+		<div id="iframe_holder" class="center-block" style="width:90%;max-width: 1000px">
+			<iframe id="add_payment" class="embed-responsive-item panel" name="add_payment" width="100%" frameborder="0" scrolling="no" hidden="true">
+			</iframe>
+		</div>
 
-    <div id="divAuthorizeNetPopup" style="display:none;" class="AuthorizeNetPopupGrayFrameTheme">
-        <div class="AuthorizeNetPopupOuter">
-            <div class="AuthorizeNetPopupInner">
-                <iframe name="iframeAuthorizeNet" id="iframeAuthorizeNet" src="empty.html"></iframe>
-            </div>
-            <div class="AuthorizeNetPopupBottom">
-                <div class="AuthorizeNetPopupLogo" title="Powered by Authorize.net"></div>
-            </div>
-            <div id="divAuthorizeNetPopupScreen" style="display:none;"></div>
-        </div>
-    </div>
-</div>
+		<form id="send_token" action="@PaymentUrl" method="post" target="add_payment">
+			<input type="hidden" name="token" value="@FormToken" />
+		</form>
+		break;
+	case AuthorizeNetMode.IFrameLightbox:
+		<div id="paymentContainer">
+			<form method="post" action="@PaymentUrl" id="formAuthorizeNetPopup" name="formAuthorizeNetPopup"
+				  target="iframeAuthorizeNet">
+				<input type="hidden" id="popupToken" name="token" value="@FormToken" />
+			</form>
+
+			<div id="divAuthorizeNetPopup" style="display:none;" class="AuthorizeNetPopupGrayFrameTheme">
+				<div class="AuthorizeNetPopupOuter">
+					<div class="AuthorizeNetPopupInner">
+						<iframe name="iframeAuthorizeNet" id="iframeAuthorizeNet" src="empty.html"></iframe>
+					</div>
+					<div class="AuthorizeNetPopupBottom">
+						<div class="AuthorizeNetPopupLogo" title="Powered by Authorize.net"></div>
+					</div>
+					<div id="divAuthorizeNetPopupScreen" style="display:none;"></div>
+				</div>
+			</div>
+		</div>
+		break;
+	default:
+		throw new ArgumentOutOfRangeException();
+}

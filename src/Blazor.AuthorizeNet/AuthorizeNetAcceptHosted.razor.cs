@@ -5,21 +5,28 @@ using Microsoft.JSInterop;
 
 namespace Blazor.AuthorizeNet;
 
+public enum AuthorizeNetMode
+{
+    EmbeddedIFrame,
+    IFrameLightbox
+
+}
 public partial class AuthorizeNetAcceptHosted(BlazorAuthorizeNetJsInterop blazorAuthorizeNetJsInterop, IJSRuntime jsRuntime) : ComponentBase, IDisposable
 {
     private DotNetObjectReference<AuthorizeNetAcceptHosted>? _dotNetRef;
     private bool _isInitialized;
     private bool _isOpened;
-    private static JsonSerializerOptions _jsonOptions = new(JsonSerializerDefaults.Web)
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
     {
         NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
 
     [Parameter]
     [EditorRequired]
-    public required string FormToken { get; set; }
+    public string? FormToken { get; set; }
 
     [Parameter]
+    [EditorRequired]
     public bool UseSandbox { get; set; } = true;
 
     [Parameter]
@@ -27,6 +34,10 @@ public partial class AuthorizeNetAcceptHosted(BlazorAuthorizeNetJsInterop blazor
 
     [Parameter]
     public EventCallback<string> OnCancel { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public AuthorizeNetMode Mode { get; set; }
 
     private string PaymentUrl => UseSandbox ? "https://test.authorize.net/payment/payment" : "https://accept.authorize.net/payment/payment";
 
@@ -47,7 +58,17 @@ public partial class AuthorizeNetAcceptHosted(BlazorAuthorizeNetJsInterop blazor
 
         if (!_isOpened && !string.IsNullOrEmpty(FormToken))
         {
-            await blazorAuthorizeNetJsInterop.OpenPopup(PaymentUrl);
+            switch (Mode)
+            {
+                case AuthorizeNetMode.EmbeddedIFrame:
+                    await blazorAuthorizeNetJsInterop.OpenIFrame();
+                    break;
+                case AuthorizeNetMode.IFrameLightbox:
+                    await blazorAuthorizeNetJsInterop.OpenPopup(PaymentUrl);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             _isOpened = true;
         }
     }
@@ -55,15 +76,23 @@ public partial class AuthorizeNetAcceptHosted(BlazorAuthorizeNetJsInterop blazor
     [JSInvokable]
     public async Task HandleTransactionResponse(string detail)
     {
-        var transactionDetail = JsonSerializer.Deserialize<TransactionDetail>(detail, _jsonOptions);
-        await OnSuccess.InvokeAsync(transactionDetail);
+        if (OnSuccess.HasDelegate)
+        {
+            var transactionDetail = JsonSerializer.Deserialize<TransactionDetail>(detail, JsonOptions);
+            await OnSuccess.InvokeAsync(transactionDetail);
+        }
+
         _isOpened = false;
     }
 
     [JSInvokable]
     public async Task HandleCancel(string reason)
     {
-        await OnCancel.InvokeAsync(reason);
+        if (OnCancel.HasDelegate)
+        {
+            await OnCancel.InvokeAsync(reason);
+        }
+
         await blazorAuthorizeNetJsInterop.Cancel();
         _isOpened = false;
     }

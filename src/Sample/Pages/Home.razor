@@ -6,6 +6,14 @@
 
 <AuthorizeNetAcceptHosted FormToken="@formToken" 
                           UseSandbox="true"
+                          Mode="AuthorizeNetMode.IFrameLightbox"
+                          OnSuccess="HandleSuccess"
+                          OnCancel="HandleCancel"
+/>
+
+<AuthorizeNetAcceptHosted FormToken="@formToken" 
+                          UseSandbox="true"
+						  Mode="AuthorizeNetMode.EmbeddedIFrame"
                           OnSuccess="HandleSuccess"
                           OnCancel="HandleCancel"
 />
